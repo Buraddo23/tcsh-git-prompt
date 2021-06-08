@@ -40,7 +40,7 @@ if ($git_branch ne "") {
 		$work_dir{'A'}++ if ($_ =~ /^A/);
 		$work_dir{'D'}++ if ($_ =~ /^D/);
 		$work_dir{'M'}++ if ($_ =~ /^R/);
-		$extra{'?'}++ if ($_ =~ /^??/);
+		$extra{'?'}++ if ($_ =~ /^\?\?/);
 		$extra{'!'}++ if ($_ =~ /^!!/);
 		$git_status++;
 	}
