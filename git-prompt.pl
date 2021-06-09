@@ -56,8 +56,8 @@ if ($git_branch ne "") {
 	} else {
 		$prompt .= "${green} ";
 	}
-	$prompt .= "${cyan}{${git_branch}";
-	$prompt .= "${green} +$index{'A'} ~$index{'M'} -$index{'D'}" if (grep { $_ != 0 } values %index); 
+	$prompt .= "${cyan}{${git_branch}${green}";
+	$prompt .= " +$index{'A'} ~$index{'M'} -$index{'D'}" if (grep { $_ != 0 } values %index); 
 	$prompt .= " ?$extra{'?'}" if ($extra{'?'});
 	$prompt .= " !$extra{'!'}" if ($extra{'!'});
 	$prompt .= " |" if ((grep { $_ != 0 } values %index) && (grep { $_ != 0 } values %work_dir));
