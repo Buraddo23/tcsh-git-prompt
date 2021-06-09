@@ -18,7 +18,7 @@ my $cyan  ="%{\033[0;36m%}";
 my $white ="%{\033[0;37m%}";
 my $end   ="%{\033[0m%}";
 
-my $prompt="${boldgr}[%n${blue}@%M] ${white}%B%c3%b ";
+my $prompt="${boldgr}[%n${blue}@%M] ${white}%B%c3%b";
 my $git_branch=`/usr/bin/env git rev-parse --abbrev-ref HEAD 2> /dev/null`;
 chomp $git_branch;
 
@@ -32,7 +32,19 @@ my %extra = ('?', 0,
              '!', 0);
 
 if ($git_branch ne "") {
-	open IF, "/usr/bin/env git status --porcelain 2> /dev/null|" or exit;
+	$prompt .= " ${cyan}{${git_branch} ";
+	
+	open IF, "/usr/bin/env git status --branch --porcelain 2> /dev/null|" or exit;
+	
+	$_ = <IF>;
+	if ($_ =~ /\[ahead (\d+)\]/) {
+		$prompt .= "^$1";
+	} elsif ($_ =~ /\[behind (\d+)\]/) {
+		$prompt .= ".$1";
+	} else {
+		$prompt .= "=";
+	}
+
 	while (<IF>) {
 		$index{'M'}++ if ($_ =~ /^.M/);
 		$index{'A'}++ if ($_ =~ /^.A/);
@@ -48,7 +60,7 @@ if ($git_branch ne "") {
 		$extra{'!'}++ if ($_ =~ /^!!/);
 	}
 
-	$prompt .= "${cyan}{${git_branch}${green}";
+	$prompt .= "${green}";
 	$prompt .= " +$index{'A'} ~$index{'M'} -$index{'D'}" if (grep { $_ != 0 } values %index); 
 	$prompt .= " ?$extra{'?'}" if ($extra{'?'});
 	$prompt .= " !$extra{'!'}" if ($extra{'!'});
