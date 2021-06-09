@@ -9,13 +9,16 @@
 use strict;
 use warnings;
 
-my $red  ="%{\033[0;31m%}";
-my $green="%{\033[0;32m%}";
-my $blue ="%{\033[1;34m%}";
-my $white="%{\033[0;37m%}";
-my $end  ="%{\033[0m%}";
+my $red   ="%{\033[0;31m%}";
+my $green ="%{\033[0;32m%}";
+my $boldgr="%{\033[1;32m%}";
+my $yellow="%{\033[0;33m%}";
+my $blue  ="%{\033[1;34m%}";
+my $cyan  ="%{\033[0;36m%}";
+my $white ="%{\033[0;37m%}";
+my $end   ="%{\033[0m%}";
 
-my $prompt="${green}[%n${blue}@%M] ${white}%B%c3%b";
+my $prompt="${boldgr}[%n${blue}@%M] ${white}%B%c3%b";
 my $git_branch=`/usr/bin/env git rev-parse --abbrev-ref HEAD 2> /dev/null`;
 chomp $git_branch;
 
@@ -36,12 +39,15 @@ if ($git_branch ne "") {
 		$index{'A'}++ if ($_ =~ /^.A/);
 		$index{'D'}++ if ($_ =~ /^.D/);
 		$index{'M'}++ if ($_ =~ /^.R/);
+
 		$work_dir{'M'}++ if ($_ =~ /^M/);
 		$work_dir{'A'}++ if ($_ =~ /^A/);
 		$work_dir{'D'}++ if ($_ =~ /^D/);
 		$work_dir{'M'}++ if ($_ =~ /^R/);
+
 		$extra{'?'}++ if ($_ =~ /^\?\?/);
 		$extra{'!'}++ if ($_ =~ /^!!/);
+
 		$git_status++;
 	}
 	
@@ -50,10 +56,13 @@ if ($git_branch ne "") {
 	} else {
 		$prompt .= "${green} ";
 	}
-	$prompt .= "{${git_branch} +$index{'A'} ~$index{'M'} -$index{'D'}";
+	$prompt .= "${cyan}{${git_branch}";
+	$prompt .= "${green} +$index{'A'} ~$index{'M'} -$index{'D'}" if (grep { $_ != 0 } values %index); 
 	$prompt .= " ?$extra{'?'}" if ($extra{'?'});
 	$prompt .= " !$extra{'!'}" if ($extra{'!'});
-	$prompt .= " | +$work_dir{'A'} ~$work_dir{'M'} -$work_dir{'D'}}";
+	$prompt .= " |" if ((grep { $_ != 0 } values %index) && (grep { $_ != 0 } values %work_dir));
+	$prompt .= "${red} +$work_dir{'A'} ~$work_dir{'M'} -$work_dir{'D'}" if (grep { $_ != 0 } values %work_dir);
+	$prompt .= "${cyan}}";
 }
 $prompt .= "${end}> ";
 	
