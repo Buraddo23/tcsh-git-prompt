@@ -38,11 +38,11 @@ if ($git_branch ne "") {
 	
 	$_ = <IF>;
 	if ($_ =~ /\[ahead (\d+)\]/) {
-		$prompt .= "^$1";
+		$prompt .= "↑$1";
 	} elsif ($_ =~ /\[behind (\d+)\]/) {
-		$prompt .= ".$1";
+		$prompt .= "↓$1";
 	} else {
-		$prompt .= "=";
+		$prompt .= "≡";
 	}
 
 	while (<IF>) {
