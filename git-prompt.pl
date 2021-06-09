@@ -7,7 +7,7 @@
 #endif
 
 use strict;
-use warnings;
+#use warnings;
 
 my $red   ="%{\033[0;31m%}";
 my $green ="%{\033[0;32m%}";
@@ -22,7 +22,6 @@ my $prompt="${boldgr}[%n${blue}@%M] ${white}%B%c3%b";
 my $git_branch=`/usr/bin/env git rev-parse --abbrev-ref HEAD 2> /dev/null`;
 chomp $git_branch;
 
-my $git_status = 0;
 my %index = ('M', 0,
              'A', 0,
              'D', 0);
@@ -47,15 +46,8 @@ if ($git_branch ne "") {
 
 		$extra{'?'}++ if ($_ =~ /^\?\?/);
 		$extra{'!'}++ if ($_ =~ /^!!/);
+	}
 
-		$git_status++;
-	}
-	
-	if ($git_status > 0) {
-		$prompt .= "${red} ";
-	} else {
-		$prompt .= "${green} ";
-	}
 	$prompt .= "${cyan}{${git_branch}${green}";
 	$prompt .= " +$index{'A'} ~$index{'M'} -$index{'D'}" if (grep { $_ != 0 } values %index); 
 	$prompt .= " ?$extra{'?'}" if ($extra{'?'});
