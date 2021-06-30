@@ -32,7 +32,7 @@ my %extra = ('?', 0,
              '!', 0);
 
 if ($git_branch ne "") {
-	$prompt .= " ${cyan}{${git_branch} ";
+	$prompt .= "${cyan}{${git_branch} ";
 	
 	open IF, "/usr/bin/env git status --branch --porcelain 2> /dev/null|" or exit;
 	
