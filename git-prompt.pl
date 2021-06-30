@@ -18,7 +18,7 @@ my $cyan  ="%{\033[0;36m%}";
 my $white ="%{\033[0;37m%}";
 my $end   ="%{\033[0m%}";
 
-my $prompt="${boldgr}[%n${blue}@%M] ${white}%B%c3%b";
+my $prompt="${boldgr}[%n${blue}@%M]${white}%B%c3%b";
 my $git_branch=`/usr/bin/env git rev-parse --abbrev-ref HEAD 2> /dev/null`;
 chomp $git_branch;
 
