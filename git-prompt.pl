@@ -60,12 +60,12 @@ if ($git_branch ne "") {
 		$extra{'!'}++ if ($_ =~ /^!!/);
 	}
 
-	$prompt .= "${green}";
+	$prompt .= "${red}";
 	$prompt .= " +$index{'A'} ~$index{'M'} -$index{'D'}" if (grep { $_ != 0 } values %index); 
 	$prompt .= " ?$extra{'?'}" if ($extra{'?'});
 	$prompt .= " !$extra{'!'}" if ($extra{'!'});
-	$prompt .= " |" if ((grep { $_ != 0 } values %index) && (grep { $_ != 0 } values %work_dir));
-	$prompt .= "${red} +$work_dir{'A'} ~$work_dir{'M'} -$work_dir{'D'}" if (grep { $_ != 0 } values %work_dir);
+	$prompt .= "$cyan |" if (((grep { $_ != 0 } values %index) || (grep { $_ != 0 } values %extra)) && (grep { $_ != 0 } values %work_dir));
+	$prompt .= "${green} +$work_dir{'A'} ~$work_dir{'M'} -$work_dir{'D'}" if (grep { $_ != 0 } values %work_dir);
 	$prompt .= "${cyan}}";
 }
 $prompt .= "${end}> ";
